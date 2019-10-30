@@ -25,3 +25,11 @@ def make_relengproject():
             (tmp / d).mkdir()
 
     return _make_releng_project
+
+
+@pytest.fixture
+def make_good_relengproject(make_relengproject):
+    def _make_good_releng_project(tmp):
+        return make_relengproject(tmp, ALL_FILES, ALL_DIRS)
+
+    return _make_good_releng_project
