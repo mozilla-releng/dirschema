@@ -4,6 +4,7 @@ import click
 
 from .checks import check_structure
 
+
 @click.command()
 @click.argument("project_dir")
 def mozrelenglint(project_dir):
