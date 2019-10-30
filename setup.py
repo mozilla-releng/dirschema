@@ -4,10 +4,9 @@
 """The setup script."""
 
 from glob import glob
-from os.path import splitext
-from os.path import basename
+from os.path import basename, splitext
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 with open("README.rst") as readme_file:
     readme = readme_file.read()
