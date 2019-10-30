@@ -4,18 +4,7 @@ import pytest
 
 from mozrelenglint.checks import check_structure
 
-ALL_FILES = (
-    "CODE_OF_CONDUCT.md",
-    "HISTORY.md",
-    "MANIFEST.in",
-    "README.md",
-    "pyproject.toml",
-    "setup.py",
-    "tox.ini",
-    ".pyup.yml",
-    ".taskcluster.yml",
-)
-ALL_DIRS = ("src", "tests")
+from .conftest import ALL_DIRS, ALL_FILES
 
 
 @pytest.mark.parametrize(
@@ -33,14 +22,8 @@ ALL_DIRS = ("src", "tests")
         ),
     ),
 )
-def test_check_structure(tmp_path, files, dirs, expected):
-    for f in files:
-        with open(tmp_path / f, "w+") as fd:
-            # Create an empty file
-            pass
-    for d in dirs:
-        (tmp_path / d).mkdir()
-
+def test_check_structure(make_relengproject, tmp_path, files, dirs, expected):
+    make_relengproject(tmp_path, files, dirs)
     result = check_structure(tmp_path)
 
     if len(expected) == 0:
