@@ -1,13 +1,24 @@
 from os import walk
-from os.path import abspath
+from os.path import abspath, isdir
 
-REQUIRED_FILES = {"CODE_OF_CONDUCT.md", "HISTORY.md", "MANIFEST.in", "README.md", "pyproject.toml", "setup.py", "tox.ini", ".pyup.yml", ".taskcluster.yml"}
+REQUIRED_FILES = {
+    "CODE_OF_CONDUCT.md",
+    "HISTORY.md",
+    "MANIFEST.in",
+    "README.md",
+    "pyproject.toml",
+    "setup.py",
+    "tox.ini",
+    ".pyup.yml",
+    ".taskcluster.yml",
+}
 REQUIRED_DIRS = {"src", "tests"}
+
 
 def check_structure(rootdir):
     rootdir = abspath(rootdir)
 
-    if not path.isdir(rootdir):
+    if not isdir(rootdir):
         return False
 
     for root, dirs, files in walk(rootdir):

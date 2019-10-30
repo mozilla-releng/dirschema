@@ -1,12 +1,23 @@
-import pytest
 from tempfile import TemporaryDirectory
+
+import pytest
 
 from mozrelenglint.checks import check_structure
 
 
 @pytest.fixture(scope="function")
 def full_structure(tmp_path):
-    files = ("CODE_OF_CONDUCT.md", "HISTORY.md", "MANIFEST.in", "README.md", "pyproject.toml", "setup.py", "tox.ini", ".pyup.yml", ".taskcluster.yml")
+    files = (
+        "CODE_OF_CONDUCT.md",
+        "HISTORY.md",
+        "MANIFEST.in",
+        "README.md",
+        "pyproject.toml",
+        "setup.py",
+        "tox.ini",
+        ".pyup.yml",
+        ".taskcluster.yml",
+    )
     dirs = ("src", "tests")
     for f in files:
         with open(tmp_path / f, "w+") as fd:
