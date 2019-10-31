@@ -1,29 +1,39 @@
+from copy import deepcopy
 from tempfile import TemporaryDirectory
 
 import pytest
 
-from mozrelenglint.checks import check_structure
+from mozrelenglint.checks import REQUIRED_FILES, check_structure
 
-from .conftest import ALL_DIRS, ALL_FILES
+# TODO: Is there a better way to get one part of a set?
+MISSING_REQUIRED_FILES = deepcopy(REQUIRED_FILES)
+MISSING_REQUIRED_FILES["."] = set(list(REQUIRED_FILES["."])[:-2])
+MISSING_REQUIRED_DIRS = deepcopy(REQUIRED_FILES)
+del MISSING_REQUIRED_DIRS["src"]
+EXTRA_REQUIRED_FILES = deepcopy(REQUIRED_FILES)
+EXTRA_REQUIRED_FILES["requirements"].add("test2.in")
+EXTRA_REQUIRED_DIRS = deepcopy(REQUIRED_FILES)
+EXTRA_REQUIRED_DIRS["extra"] = set()
+MISSING_AND_EXTRA = deepcopy(REQUIRED_FILES)
+MISSING_AND_EXTRA["."] = set(list(REQUIRED_FILES["."])[:-2])
+MISSING_AND_EXTRA["extra"] = set()
+MISSING_AND_EXTRA["src"] = {"foo.py"}
+del MISSING_AND_EXTRA["tests"]
 
 
 @pytest.mark.parametrize(
-    "files,dirs,expected",
+    "files,expected",
     (
-        (ALL_FILES, ALL_DIRS, []),
-        (ALL_FILES[:-2], ALL_DIRS, ["missing file(s)"]),
-        (ALL_FILES, ALL_DIRS[:1], ["missing dir(s)"]),
-        (ALL_FILES + ("foo",), ALL_DIRS, ["extra file(s)"]),
-        (ALL_FILES, ALL_DIRS + ("foo",), ["extra dir(s)"]),
-        (
-            ALL_FILES[:-2] + ("foo",),
-            ALL_DIRS[:1] + ("bar",),
-            ["missing file(s)", "missing dir(s)", "extra file(s)", "extra dir(s)"],
-        ),
+        (REQUIRED_FILES, []),
+        (MISSING_REQUIRED_FILES, ["missing file(s)"]),
+        (MISSING_REQUIRED_DIRS, ["missing dir(s)"]),
+        (EXTRA_REQUIRED_FILES, ["extra file(s)"]),
+        (EXTRA_REQUIRED_DIRS, ["extra dir(s)"]),
+        (MISSING_AND_EXTRA, ["missing file(s)", "missing dir(s)", "extra file(s)", "extra dir(s)"]),
     ),
 )
-def test_check_structure(make_relengproject, tmp_path, files, dirs, expected):
-    make_relengproject(tmp_path, files, dirs)
+def test_check_structure(make_relengproject, tmp_path, files, expected):
+    make_relengproject(tmp_path, files)
     result = check_structure(tmp_path)
 
     if len(expected) == 0:

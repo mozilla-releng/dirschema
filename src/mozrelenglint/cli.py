@@ -11,5 +11,5 @@ def mozrelenglint(project_dir):
     errors = check_structure(project_dir)
 
     if errors:
-        click.echo(errors)
+        click.echo("\n".join(errors))
         sys.exit(1)
