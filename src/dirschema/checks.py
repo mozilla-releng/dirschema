@@ -59,10 +59,14 @@ def check_dir(schema, dir_, dirname=None):
     return errors
 
 
-def check_structure(schema, rootdir):
+def check_ondisk_structure(schema, rootdir):
     rootdir = Path(rootdir)
 
     if not rootdir.is_dir():
         return [f"invalid directory: {rootdir.name}"]
 
     return check_dir(schema, rootdir, "root directory")
+
+
+def check_github_structure(schema, uri):
+    return

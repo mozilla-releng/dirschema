@@ -2,7 +2,7 @@ from copy import deepcopy
 
 import pytest
 
-from dirschema.checks import check_structure
+from dirschema.checks import check_ondisk_structure
 
 TEST_SCHEMA = {
     "files": {"foo": {}, "bar": {"contains": ["bar1"]}, "baz": {"contains": ["bugs", "babs"]}},
@@ -85,10 +85,10 @@ MISSING_AND_EXTRA["dirs"]["dir1"]["dirs"]["extradir"] = {"files": {"another-extr
         ),
     ),
 )
-def test_check_structure(make_project, tmp_path, files, expected):
+def test_check_ondisk_structure(make_project, tmp_path, files, expected):
     make_project(tmp_path, files)
 
-    result = check_structure(TEST_SCHEMA, tmp_path)
+    result = check_ondisk_structure(TEST_SCHEMA, tmp_path)
 
     if len(expected) == 0:
         if len(result) != 0:
@@ -99,7 +99,7 @@ def test_check_structure(make_project, tmp_path, files, expected):
                 assert False, f"Expected to find '{err}' in '{result}'"
 
 
-def test_check_structure_invalid_dir():
-    result = check_structure(TEST_SCHEMA, "/squigglyborf")
+def test_check_ondisk_structure_invalid_dir():
+    result = check_ondisk_structure(TEST_SCHEMA, "/squigglyborf")
     assert len(result) == 1
     assert "invalid directory" in result[0]
