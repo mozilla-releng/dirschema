@@ -1,12 +1,12 @@
 from click.testing import CliRunner
 
-from mozrelenglint.cli import mozrelenglint
+from dirschema.cli import dirschema
 
 # def test_cli_good_project(make_good_relengproject, tmp_path):
 #    make_good_relengproject(tmp_path)
 #
 #    runner = CliRunner()
-#    result = runner.invoke(mozrelenglint, [str(tmp_path)])
+#    result = runner.invoke(dirschema, [str(tmp_path)])
 #
 #    assert result.exit_code == 0
 #
@@ -15,7 +15,7 @@ from mozrelenglint.cli import mozrelenglint
 #    make_relengproject(tmp_path, {})
 #
 #    runner = CliRunner()
-#    result = runner.invoke(mozrelenglint, [str(tmp_path)])
+#    result = runner.invoke(dirschema, [str(tmp_path)])
 #
 #    assert result.exit_code == 1
 #    assert "missing file" in result.output

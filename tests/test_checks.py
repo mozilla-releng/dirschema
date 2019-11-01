@@ -3,7 +3,7 @@ from tempfile import TemporaryDirectory
 
 import pytest
 
-from mozrelenglint.checks import check_structure
+from dirschema.checks import check_structure
 
 TEST_SCHEMA = {
     "files": {"foo": {}, "bar": {"contains": ["bar1"]}, "baz": {"contains": ["bugs", "babs"]}},
@@ -59,10 +59,6 @@ def test_check_structure(make_project, tmp_path, files, expected):
     make_project(tmp_path, files)
     import os
 
-    for root, dirs2, files2 in os.walk(tmp_path):
-        print(root)
-        print(dirs2)
-        print(files2)
     result = check_structure(TEST_SCHEMA, tmp_path)
 
     if len(expected) == 0:
