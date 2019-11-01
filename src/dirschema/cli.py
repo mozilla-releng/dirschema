@@ -37,3 +37,6 @@ def dirschema(schema, project_dir_or_repo, verbose, access_token):
     if errors:
         click.echo("\n".join(errors))
         sys.exit(1)
+    else:
+        click.echo("Success!")
+        sys.exit(0)
