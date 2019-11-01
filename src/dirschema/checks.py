@@ -81,9 +81,8 @@ def _check_github_file(schema, repo, file_):
         logger.debug(f"Schema has no content requirements, not downloading file")
         return []
 
-    # TODO: Casting to a string is probably not the right fix for this.
-    # Maybe we should be reading the schema as UTF-8?
-    contents = str(b64decode(repo.get_contents(file_).content))
+    # TODO: Can we avoid assuming UTF-8 here?
+    contents = b64decode(repo.get_contents(file_).content).decode("utf-8")
     logger.debug(f"Got contents:")
     logger.debug(contents)
     return _check_file(schema, file_, contents)
