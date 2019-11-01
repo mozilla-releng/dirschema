@@ -1,7 +1,7 @@
-from click.testing import CliRunner
-
-from dirschema.cli import dirschema
-
+# from click.testing import CliRunner
+#
+# from dirschema.cli import dirschema
+#
 # def test_cli_good_project(make_good_relengproject, tmp_path):
 #    make_good_relengproject(tmp_path)
 #

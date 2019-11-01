@@ -1,6 +1,4 @@
 import logging
-from os import walk
-from os.path import abspath, basename, isdir
 from pathlib import Path
 
 logger = logging.getLogger(__file__)
