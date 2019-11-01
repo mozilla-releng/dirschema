@@ -15,12 +15,14 @@ def check_file(schema, file_):
 
     for required in schema.get("contains", []):
         if required not in contents:
-            errors.append(f"{file_} is missing required string: '{required}'")
+            errors.append(f"{file_.name} is missing required string: '{required}'")
 
     return errors
 
 
-def check_dir(schema, dir_):
+def check_dir(schema, dir_, dirname=None):
+    if not dirname:
+        dirname = dir_.name
     allow_extra_files = schema.get("allow_extra_files")
     allow_extra_dirs = schema.get("allow_extra_dirs")
     expected_files = set(schema.get("files", []))
@@ -37,16 +39,16 @@ def check_dir(schema, dir_):
 
     # Missing files & dirs
     for f in expected_files - found_files:
-        errors.append(f"missing file in {dir_}: {f}")
+        errors.append(f"missing file in {dirname}: {f}")
     for d in expected_dirs - found_dirs:
-        errors.append(f"missing dir in {dir_}: {d}")
+        errors.append(f"missing dir in {dirname}: {d}")
 
     if not allow_extra_files:
         for f in found_files - expected_files:
-            errors.append(f"extra file in {dir_}: {f}")
+            errors.append(f"extra file in {dirname}: {f}")
     if not allow_extra_dirs:
-        for f in found_dirs - expected_dirs:
-            errors.append(f"extra dir in {dir_}: {d}")
+        for d in found_dirs - expected_dirs:
+            errors.append(f"extra dir in {dirname}: {d}")
 
     for d in found_dirs:
         if d in schema.get("dirs", {}):
@@ -65,4 +67,4 @@ def check_structure(schema, rootdir):
     if not rootdir.is_dir():
         return [f"invalid directory: {rootdir.name}"]
 
-    return check_dir(schema, rootdir)
+    return check_dir(schema, rootdir, "root directory")

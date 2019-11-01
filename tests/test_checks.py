@@ -47,17 +47,47 @@ and babs
     },
 }
 
+WRONG_CONTENTS = deepcopy(GOOD_PROJECT)
+WRONG_CONTENTS["files"]["bar"] = "wrong contents"
+MISSING_FILE = deepcopy(GOOD_PROJECT)
+del MISSING_FILE["files"]["foo"]
+MISSING_DIR = deepcopy(GOOD_PROJECT)
+del MISSING_DIR["dirs"]["dir2"]
+EXTRA_FILE = deepcopy(GOOD_PROJECT)
+EXTRA_FILE["files"]["extra"] = "i am an extra file"
+EXTRA_DIR = deepcopy(GOOD_PROJECT)
+EXTRA_DIR["dirs"]["extradir"] = {"files": {"extra": ""}}
+MISSING_AND_EXTRA = deepcopy(GOOD_PROJECT)
+MISSING_AND_EXTRA["files"]["baz"] = "bad string1"
+del MISSING_AND_EXTRA["dirs"]["dir1"]["files"]["f1"]
+del MISSING_AND_EXTRA["dirs"]["dir1"]["dirs"]["nested1"]
+MISSING_AND_EXTRA["dirs"]["dir1"]["files"]["extra"] = "extra extra"
+MISSING_AND_EXTRA["dirs"]["dir1"]["dirs"]["extradir"] = {"files": {"another-extra": ""}}
+
 
 @pytest.mark.parametrize(
     "files,expected",
     (
-        (GOOD_PROJECT, []),
-        # TODO: more tests here!
+        (GOOD_PROJECT, ()),
+        (WRONG_CONTENTS, ("bar is missing required string",)),
+        (MISSING_FILE, ("missing file in root directory: foo",)),
+        (MISSING_DIR, ("missing dir in root directory: dir2",)),
+        (EXTRA_FILE, ("extra file in root directory: extra",)),
+        (EXTRA_DIR, ("extra dir in root directory: extradir",)),
+        (
+            MISSING_AND_EXTRA,
+            (
+                "baz is missing required string",
+                "missing file in dir1: f1",
+                "missing dir in dir1: nested1",
+                "extra file in dir1: extra",
+                "extra dir in dir1: extradir",
+            ),
+        ),
     ),
 )
 def test_check_structure(make_project, tmp_path, files, expected):
     make_project(tmp_path, files)
-    import os
 
     result = check_structure(TEST_SCHEMA, tmp_path)
 
