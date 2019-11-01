@@ -48,7 +48,17 @@
     "type": "object",
     "title": "Project layout specification",
     "additionalProperties": false,
+    "required": [
+        "allow_extra_files",
+        "allow_extra_dirs"
+    ],
     "properties": {
+        "allow_extra_files": {
+            "type": "boolean"
+        },
+        "allow_extra_dirs": {
+            "type": "boolean"
+        },
         "files": {
             "$ref": "#/definitions/files"
         },
