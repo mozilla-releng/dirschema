@@ -109,11 +109,11 @@ def _check_github_dir(schema, repo, dir_, dirname=None):
 
     for d in found_dirs:
         if d in schema.get("dirs", {}):
-            errors.extend(_check_github_dir(schema["dirs"][d], repo, d))
+            errors.extend(_check_github_dir(schema["dirs"][d], repo, f"{dir_}/{d}"))
 
     for f in found_files:
         if f in schema.get("files", {}):
-            errors.extend(_check_github_file(schema["files"][f], repo, f))
+            errors.extend(_check_github_file(schema["files"][f], repo, f"{dir_}/{f}"))
 
     return errors
 
