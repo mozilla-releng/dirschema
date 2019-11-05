@@ -98,8 +98,14 @@ Create a directory structure:
     include setup.py
     recursive-include src *
     $ dirschema sample.json sample/
+    Checking sample/…
+    
+    Results
+    *******
+    sample/: Has errors
     missing dir in root directory: tests
     MANIFEST.in is missing required string: 'recursive-include tests *'
+
     $
 
 Fix the errors, and run it again:
@@ -109,7 +115,12 @@ Fix the errors, and run it again:
     $ echo "recursive-include tests *" >> sample/MANIFEST.in
     $ mkdir sample/tests
     $ dirschema sample.json sample/
-    Success!
+    Checking sample/…
+
+    Results
+    *******
+    sample/: Success!
+
     $
 
 Features

@@ -34,14 +34,17 @@ def dirschema(schema, project_dir_or_repo, verbose, access_token):
     project_errors = {}
 
     for tocheck in project_dir_or_repo:
-        print(tocheck)
         # Surely this assumption will never break...
+        click.echo(f"Checking {tocheck}…")
         if "://" in tocheck:
             repo = urlparse(tocheck).path[1:]
             project_errors[tocheck] = check_github_structure(schema, repo, access_token)
         else:
             project_errors[tocheck] = check_ondisk_structure(schema, tocheck)
 
+    click.echo()
+    click.echo("Results")
+    click.echo("*******")
     any_errors = False
     for project, errors in project_errors.items():
         if errors:
@@ -50,6 +53,8 @@ def dirschema(schema, project_dir_or_repo, verbose, access_token):
             click.echo("\n".join(errors))
         else:
             click.echo(f"{project}: Success!")
+
+        click.echo()
 
     if any_errors:
         sys.exit(1)
