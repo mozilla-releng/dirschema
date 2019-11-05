@@ -11,7 +11,11 @@ import click
 @click.argument("schema")
 @click.argument("project_dir_or_repo")
 @click.option("-v", "--verbose", is_flag=True, help="Enables verbose mode")
-@click.option("--access-token", default=os.environ.get("GITHUB_ACCESS_TOKEN"), help="Github access token, if checking a repository")
+@click.option(
+    "--access-token",
+    default=os.environ.get("GITHUB_ACCESS_TOKEN"),
+    help="Github access token, if checking a repository",
+)
 def dirschema(schema, project_dir_or_repo, verbose, access_token):
     # TODO: why isn't logging.config.dictConfig working when we
     # set config for a "dirschema" logger
