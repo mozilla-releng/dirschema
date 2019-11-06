@@ -1,0 +1,13 @@
+---
+allow_extra_files: false
+allow_extra_dirs: false
+files:
+  foo: {}
+  bar: {}
+dirs:
+  dir1:
+    allow_extra_files: false
+    allow_extra_dirs: false
+    files:
+      f1: {}
+      f2: {}

@@ -11,8 +11,8 @@ more-itertools==7.2.0     # via zipp
 packaging==19.2           # via tox
 pluggy==0.13.0            # via tox
 py==1.8.0                 # via tox
-pyparsing==2.4.2          # via packaging
-six==1.12.0               # via packaging, tox
+pyparsing==2.4.4          # via packaging
+six==1.13.0               # via packaging, tox
 toml==0.10.0              # via tox
 tox==3.14.0
 virtualenv==16.7.7        # via tox

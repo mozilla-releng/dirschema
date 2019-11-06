@@ -1,0 +1,47 @@
+---
+definitions:
+  files:
+    type: object
+    patternProperties:
+      "^.+$":
+        type: object
+        additionalProperties: false
+        properties:
+          contains:
+            type: array
+            items:
+              type: string
+  dirs:
+    type: object
+    patternProperties:
+      "^.+$":
+        type: object
+        required:
+        - allow_extra_files
+        - allow_extra_dirs
+        additionalProperties: false
+        properties:
+          allow_extra_files:
+            type: boolean
+          allow_extra_dirs:
+            type: boolean
+          files:
+            "$ref": "#/definitions/files"
+          dirs:
+            "$ref": "#/definitions/dirs"
+type: object
+title: Project layout specification
+additionalProperties: false
+required:
+- allow_extra_files
+- allow_extra_dirs
+properties:
+  allow_extra_files:
+    type: boolean
+  allow_extra_dirs:
+    type: boolean
+  files:
+    "$ref": "#/definitions/files"
+  dirs:
+    "$ref": "#/definitions/dirs"
+

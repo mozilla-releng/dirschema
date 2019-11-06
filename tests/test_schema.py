@@ -1,5 +1,6 @@
 import pytest
 from jsonschema import ValidationError
+from yaml import YAMLError
 
 from dirschema.schema import load_schema
 
@@ -12,7 +13,7 @@ def test_load_schema_good():
 
 
 @pytest.mark.parametrize(
-    "schema,expected", (('{"files": {}, "dirs": {}}', ValidationError), ("{badjson}", ValueError))
+    "schema,expected", (('{"files": {}, "dirs": {}}', ValidationError), ("][:badyaml:", YAMLError))
 )
 def test_load_schema_invalid(schema, expected):
     try:

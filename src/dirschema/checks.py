@@ -146,5 +146,4 @@ def check_github_structure(schema, repo_name, access_token):
     g = Github(access_token)
     repo = g.get_repo(repo_name)
 
-
     return _check_github_dir(schema, repo, ref, dir_, "root directory")
