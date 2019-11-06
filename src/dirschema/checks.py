@@ -74,7 +74,7 @@ def _check_ondisk_dir(schema, dir_, dirname=None):
     return errors
 
 
-def _check_github_file(schema, repo, file_):
+def _check_github_file(schema, repo, ref, file_):
     logger.debug(f"Verifying file: {file_}")
 
     if not schema.get("contains"):
@@ -82,13 +82,13 @@ def _check_github_file(schema, repo, file_):
         return []
 
     # TODO: Can we avoid assuming UTF-8 here?
-    contents = b64decode(repo.get_contents(file_).content).decode("utf-8")
+    contents = b64decode(repo.get_contents(file_, ref=ref).content).decode("utf-8")
     logger.debug(f"Got contents:")
     logger.debug(contents)
     return _check_file(schema, file_, contents)
 
 
-def _check_github_dir(schema, repo, dir_, dirname=None):
+def _check_github_dir(schema, repo, ref, dir_, dirname=None):
     if not dirname:
         dirname = dir_
 
@@ -97,7 +97,7 @@ def _check_github_dir(schema, repo, dir_, dirname=None):
     errors = []
 
     logger.debug(f"Processing dir: {dirname}")
-    for i in repo.get_contents(dir_):
+    for i in repo.get_contents(dir_, ref=ref):
         if i.type == "file":
             logger.debug(f"Found file: {i.name}")
             found_files.add(i.name)
@@ -109,11 +109,11 @@ def _check_github_dir(schema, repo, dir_, dirname=None):
 
     for d in found_dirs:
         if d in schema.get("dirs", {}):
-            errors.extend(_check_github_dir(schema["dirs"][d], repo, f"{dir_}/{d}"))
+            errors.extend(_check_github_dir(schema["dirs"][d], repo, ref, f"{dir_}/{d}"))
 
     for f in found_files:
         if f in schema.get("files", {}):
-            errors.extend(_check_github_file(schema["files"][f], repo, f"{dir_}/{f}"))
+            errors.extend(_check_github_file(schema["files"][f], repo, ref, f"{dir_}/{f}"))
 
     return errors
 
@@ -128,8 +128,23 @@ def check_ondisk_structure(schema, rootdir):
 
 
 def check_github_structure(schema, repo_name, access_token):
+    # An assumption that will never break!
+    if "tree" in repo_name:
+        # mozilla-releng/scriptworker-scripts/tree/master/addonscript
+        # ->
+        # scriptworker-scripts, /master/addonscript
+        repo_name, path = repo_name.split("tree", 1)
+        repo_name = repo_name.rstrip("/")
+        # /master/addonscript -> master, addonscript
+        ref, dir_ = path.split("/", 2)[-2:]
+    else:
+        dir_ = ""
+        # Another glorious assumption!
+        ref = "master"
+
     # TODO: error handling
     g = Github(access_token)
     repo = g.get_repo(repo_name)
 
-    return _check_github_dir(schema, repo, "", "root directory")
+
+    return _check_github_dir(schema, repo, ref, dir_, "root directory")
