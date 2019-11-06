@@ -8,6 +8,9 @@ logger = logging.getLogger("dirschema")
 
 
 def _check_file(schema, filename, contents):
+    if schema.get("absent"):
+        return [f"{filename} shouldn't exist"]
+
     errors = []
 
     for required in schema.get("contains", []):
@@ -18,10 +21,15 @@ def _check_file(schema, filename, contents):
 
 
 def _check_dir(schema, dirname, found_files, found_dirs):
+    if schema.get("absent"):
+        return [f"{dirname} shouldn't exist"]
+
     allow_extra_files = schema.get("allow_extra_files")
     allow_extra_dirs = schema.get("allow_extra_dirs")
-    expected_files = set(schema.get("files", []))
-    expected_dirs = set(schema.get("dirs", []))
+    expected_files = set(
+        [f for f in schema.get("files", []) if not schema["files"][f].get("absent")]
+    )
+    expected_dirs = set([d for d in schema.get("dirs", []) if not schema["dirs"][d].get("absent")])
     errors = []
 
     for f in expected_files - found_files:
@@ -40,7 +48,7 @@ def _check_dir(schema, dirname, found_files, found_dirs):
 
 
 def _check_ondisk_file(schema, file_):
-    if not schema.get("contains"):
+    if not schema.get("contains") and not schema.get("absent"):
         return []
 
     contents = open(file_).read()

@@ -22,7 +22,8 @@ TEST_SCHEMA = {
         "dir2": {
             "allow_extra_files": True,
             "allow_extra_dirs": True,
-            "files": {"required-file": {}},
+            "files": {"required-file": {}, "badfile": {"absent": True}},
+            "dirs": {"baddir": {"absent": True}},
         },
     },
 }
@@ -56,6 +57,10 @@ EXTRA_FILE = deepcopy(GOOD_PROJECT)
 EXTRA_FILE["files"]["extra"] = "i am an extra file"
 EXTRA_DIR = deepcopy(GOOD_PROJECT)
 EXTRA_DIR["dirs"]["extradir"] = {"files": {"extra": ""}}
+BAD_FILE = deepcopy(GOOD_PROJECT)
+BAD_FILE["dirs"]["dir2"]["files"]["badfile"] = "i am bad"
+BAD_DIR = deepcopy(GOOD_PROJECT)
+BAD_DIR["dirs"]["dir2"]["dirs"]["baddir"] = {}
 MISSING_AND_EXTRA = deepcopy(GOOD_PROJECT)
 MISSING_AND_EXTRA["files"]["baz"] = "bad string1"
 del MISSING_AND_EXTRA["dirs"]["dir1"]["files"]["f1"]
@@ -73,6 +78,8 @@ MISSING_AND_EXTRA["dirs"]["dir1"]["dirs"]["extradir"] = {"files": {"another-extr
         (MISSING_DIR, ("missing dir in root directory: dir2",)),
         (EXTRA_FILE, ("extra file in root directory: extra",)),
         (EXTRA_DIR, ("extra dir in root directory: extradir",)),
+        (BAD_FILE, ("badfile shouldn't exist",)),
+        (BAD_DIR, ("baddir shouldn't exist",)),
         (
             MISSING_AND_EXTRA,
             (
