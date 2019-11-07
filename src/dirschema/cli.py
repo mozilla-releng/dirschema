@@ -8,15 +8,15 @@ import click
 
 
 @click.command()
-@click.argument("schema")
 @click.argument("project_dir_or_repo", nargs=-1)
+@click.option("-s", "--schema", multiple=True)
 @click.option("-v", "--verbose", is_flag=True, help="Enables verbose mode")
 @click.option(
     "--access-token",
     default=os.environ.get("GITHUB_ACCESS_TOKEN"),
     help="Github access token, if checking a repository",
 )
-def dirschema(schema, project_dir_or_repo, verbose, access_token):
+def dirschema(project_dir_or_repo, schema, verbose, access_token):
     # TODO: why isn't logging.config.dictConfig working when we
     # set config for a "dirschema" logger
     if verbose:
@@ -27,9 +27,10 @@ def dirschema(schema, project_dir_or_repo, verbose, access_token):
         logging.basicConfig(level=logging.WARNING)
 
     from .checks import check_github_structure, check_ondisk_structure
-    from .schema import load_schema
+    from .schema import load_schemas
 
-    schema = load_schema(open(schema).read())
+    logging.debug(schema)
+    loaded_schema = load_schemas(*[open(s).read() for s in schema])
 
     project_errors = {}
 
@@ -38,9 +39,9 @@ def dirschema(schema, project_dir_or_repo, verbose, access_token):
         click.echo(f"Checking {tocheck}…")
         if "://" in tocheck:
             repo = urlparse(tocheck).path[1:]
-            project_errors[tocheck] = check_github_structure(schema, repo, access_token)
+            project_errors[tocheck] = check_github_structure(loaded_schema, repo, access_token)
         else:
-            project_errors[tocheck] = check_ondisk_structure(schema, tocheck)
+            project_errors[tocheck] = check_ondisk_structure(loaded_schema, tocheck)
 
     click.echo()
     click.echo("Results")
