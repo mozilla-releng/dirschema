@@ -9,6 +9,7 @@ from deepmerge.exception import InvalidMerge
 logger = logging.getLogger("dirschema")
 
 SCHEMA_SCHEMA = Path(__file__).parent / "schemas" / "dirschema-v1.yaml"
+MANIFEST_SCHEMA = Path(__file__).parent / "schemas" / "manifest-v1.yaml"
 
 
 def fail_if_file_is_absent_and_present(config, path, base, nxt):
@@ -47,7 +48,15 @@ def combine_schemas(schemas):
 
 
 def load_schemas(*schemas):
+    # TODO: cache loaded schemas
     loaded = combine_schemas([yaml.safe_load(schema) for schema in schemas])
     schema_schema = yaml.safe_load(open(SCHEMA_SCHEMA).read())
     jsonschema.validate(loaded, schema_schema)
+    return loaded
+
+
+def load_manifest(manifest):
+    loaded = yaml.safe_load(manifest)
+    manifest_schema = yaml.safe_load(open(MANIFEST_SCHEMA).read())
+    jsonschema.validate(loaded, manifest_schema)
     return loaded

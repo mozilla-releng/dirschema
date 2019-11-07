@@ -3,6 +3,7 @@ from pathlib import Path
 from traceback import print_exception
 
 import pytest
+import yaml
 from click.testing import CliRunner
 
 from dirschema.cli import dirschema
@@ -25,7 +26,7 @@ def test_cli_good_project(make_project, tmp_path, schemas):
     make_project(tmp_path, GOOD_PROJECT)
 
     runner = CliRunner()
-    args = []
+    args = ["check-projects"]
     for schema in schemas:
         args.extend(["-s", str(schema)])
     args.append(str(tmp_path))
@@ -41,7 +42,9 @@ def test_cli_bad_project(make_project, tmp_path):
     make_project(tmp_path, BAD_PROJECT)
 
     runner = CliRunner()
-    result = runner.invoke(dirschema, ["-s", str(YAML_SCHEMA_PATH), str(tmp_path)])
+    result = runner.invoke(
+        dirschema, ["check-projects", "-s", str(YAML_SCHEMA_PATH), str(tmp_path)]
+    )
 
     if result.exit_code != 1:
         assert False, print_exception(*result.exc_info[:3])
@@ -56,7 +59,9 @@ def test_cli_multiple_good_projects(make_project, tmp_path_factory):
         make_project(d, GOOD_PROJECT)
 
     runner = CliRunner()
-    result = runner.invoke(dirschema, ["-s", str(YAML_SCHEMA_PATH), *[str(d) for d in dirs]])
+    result = runner.invoke(
+        dirschema, ["check-projects", "-s", str(YAML_SCHEMA_PATH), *[str(d) for d in dirs]]
+    )
 
     if result.exit_code != 0:
         assert False, print_exception(*result.exc_info[:3])
@@ -71,10 +76,36 @@ def test_cli_multiple_projects_one_bad(make_project, tmp_path_factory):
     make_project(bad_dir, BAD_PROJECT)
 
     runner = CliRunner()
-    result = runner.invoke(dirschema, ["-s", str(YAML_SCHEMA_PATH), str(good_dir), str(bad_dir)])
+    result = runner.invoke(
+        dirschema, ["check-projects", "-s", str(YAML_SCHEMA_PATH), str(good_dir), str(bad_dir)]
+    )
 
     if result.exit_code != 1:
         assert False, print_exception(*result.exc_info[:3])
 
     assert result.stdout.count("Success!") == 1
     assert result.stdout.count("missing file in root directory") == 2
+
+
+def test_cli_with_manifest(make_project, tmp_path_factory):
+    manifest_file = tmp_path_factory.mktemp("manifest") / "manifest.json"
+    dirs = [tmp_path_factory.mktemp("d1"), tmp_path_factory.mktemp("d2")]
+
+    manifest = {
+        "stuff": {"schema": str(YAML_SCHEMA_PATH), "projects": [str(d) for d in dirs]},
+        "secondary": {"schema": str(SECONDARY_SCHEMA_PATH), "projects": [str(d) for d in dirs]},
+    }
+
+    with open(manifest_file, "w+") as f:
+        yaml.dump(manifest, f)
+
+    for d in dirs:
+        make_project(d, GOOD_PROJECT)
+
+    runner = CliRunner()
+    result = runner.invoke(dirschema, ["check-manifest", str(manifest_file)])
+
+    if result.exit_code != 0:
+        assert False, print_exception(*result.exc_info[:3])
+
+    assert result.stdout.count("Success!") == 2

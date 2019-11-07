@@ -1,0 +1,18 @@
+---
+type: object
+title: Manifest of projects with schemas that apply to them
+additionalProperties: false
+patternProperties:
+  "^.+":
+    type: object
+    additionalProperties: false
+    required:
+      - schema
+      - projects
+    properties:
+      schema:
+        type: string
+      projects:
+        type: array
+        items:
+          type: string
