@@ -137,11 +137,11 @@ def check_ondisk_structure(schema, rootdir):
 
 def check_github_structure(schema, repo_name, access_token):
     # An assumption that will never break!
-    if "tree" in repo_name:
+    if "/tree/" in repo_name:
         # mozilla-releng/scriptworker-scripts/tree/master/addonscript
         # ->
         # scriptworker-scripts, /master/addonscript
-        repo_name, path = repo_name.split("tree", 1)
+        repo_name, path = repo_name.split("/tree/", 1)
         repo_name = repo_name.rstrip("/")
         # /master/addonscript -> master, addonscript
         ref, dir_ = path.split("/", 2)[-2:]
