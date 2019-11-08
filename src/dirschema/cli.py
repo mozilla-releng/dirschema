@@ -53,7 +53,7 @@ def do_check_projects(projects, access_token):
     click.echo("Results")
     click.echo("*******")
     any_errors = False
-    for project, errors in project_errors.items():
+    for project, errors in sorted(project_errors.items(), key=lambda i: len(i[1])):
         if errors:
             any_errors = True
             click.echo(f"{project}: Has errors")
