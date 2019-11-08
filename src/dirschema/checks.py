@@ -110,8 +110,8 @@ def _check_github_dir(schema, repo, ref, dir_, dirname=None):
             logger.debug(f"Found file: {i.name}")
             found_files.add(i.name)
         elif i.type == "dir":
-            logger.debug(f"Found dir: {i.path}")
-            found_dirs.add(i.path)
+            logger.debug(f"Found dir: {i.name}")
+            found_dirs.add(i.name)
 
     errors.extend(_check_dir(schema, dirname, found_files, found_dirs))
 
