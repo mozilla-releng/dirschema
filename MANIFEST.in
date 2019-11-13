@@ -19,3 +19,4 @@ recursive-include docs *.rst conf.py
 exclude .pyup.yml
 exclude .taskcluster.yml
 exclude Dockerfile.test
+exclude tests
