@@ -40,7 +40,7 @@ setup(
     author="Ben Hearsum",
     author_email="bhearsum@mozilla.com",
     classifiers=[
-        "Development Status :: 2 - Pre-Alpha",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
         "Natural Language :: English",
@@ -63,6 +63,6 @@ setup(
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/mozbhearsum/dirschema",
-    version="0.1.0",
+    version="0.5",
     zip_safe=False,
 )

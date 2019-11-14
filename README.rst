@@ -132,5 +132,10 @@ Features
 * Directory structure can be checked as deep as desired
 * Check a local directory or a Github repository
 
+FAQ
+---
+* Why?
+* Why not JSON Schema?
+
 Credits
 -------
