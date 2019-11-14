@@ -5,9 +5,6 @@ Directory Schema Checker
 .. image:: https://img.shields.io/pypi/v/dirschema.svg
         :target: https://pypi.python.org/pypi/dirschema
 
-.. image:: https://img.shields.io/travis/mozbhearsum/dirschema.svg
-        :target: https://travis-ci.org/mozbhearsum/dirschema
-
 .. image:: https://readthedocs.org/projects/dirschema/badge/?version=latest
         :target: https://dirschema.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
