@@ -32,7 +32,7 @@ def dirschema(ctx, verbose, access_token):
 
 
 def do_check_projects(projects, access_token):
-    from .checks import check_github_structure, check_ondisk_structure
+    from .checks import check_github_structure, check_ondisk_structure, error_report
     from .schema import load_schemas
 
     project_errors = {}
@@ -44,8 +44,21 @@ def do_check_projects(projects, access_token):
         click.echo(f"Checking {project}…")
         # Surely this assumption will never break...
         if "://" in project:
-            repo = urlparse(project).path[1:]
-            project_errors[project] = check_github_structure(loaded_schema, repo, access_token)
+            repo_name = urlparse(project).path[1:]
+            if "/tree/" in repo_name:
+                # mozilla-releng/scriptworker-scripts/tree/master/addonscript
+                # ->
+                # scriptworker-scripts, /master/addonscript
+                repo_name, path = repo_name.split("/tree/", 1)
+                repo_name = repo_name.rstrip("/")
+                # /master/addonscript -> master, addonscript
+                ref, dir_ = path.split("/", 2)[-2:]
+            else:
+                ref = "master"
+                dir_ = ""
+            project_errors[project] = check_github_structure(
+                loaded_schema, repo_name, access_token, dir_, ref
+            )
         else:
             project_errors[project] = check_ondisk_structure(loaded_schema, project)
 
@@ -63,10 +76,7 @@ def do_check_projects(projects, access_token):
     for project in sorted(successes):
         click.echo(f"{project}: Success!")
 
-    for project, errors in sorted(failures.items(), key=lambda i: i):
-        click.echo()
-        click.echo(f"{project}: Has errors")
-        click.echo("\n".join(errors))
+    click.echo(error_report(failures), nl=False)
 
     if len(failures) > 0:
         return 1
@@ -100,3 +110,13 @@ def check_manifest(ctx, manifest):
             projects[project].append(str(manifest_dir / Path(grouping["schema"])))
 
     sys.exit(do_check_projects(projects, access_token))
+
+
+@dirschema.command()
+@click.argument("private_key", nargs=1)
+@click.argument("app_id", nargs=1)
+def run_github_app(private_key, app_id):
+    from .github import create_app
+
+    app = create_app(open(private_key).read(), app_id)
+    app.run(port=9876, host="0.0.0.0")

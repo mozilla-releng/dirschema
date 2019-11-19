@@ -1,5 +1,8 @@
 click
+cryptography
 deepmerge
+flask
 jsonschema
 pygithub
+pyjwt
 pyyaml

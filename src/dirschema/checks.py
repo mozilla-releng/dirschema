@@ -135,23 +135,20 @@ def check_ondisk_structure(schema, rootdir):
     return _check_ondisk_dir(schema, rootdir, "root directory")
 
 
-def check_github_structure(schema, repo_name, access_token):
-    # An assumption that will never break!
-    if "/tree/" in repo_name:
-        # mozilla-releng/scriptworker-scripts/tree/master/addonscript
-        # ->
-        # scriptworker-scripts, /master/addonscript
-        repo_name, path = repo_name.split("/tree/", 1)
-        repo_name = repo_name.rstrip("/")
-        # /master/addonscript -> master, addonscript
-        ref, dir_ = path.split("/", 2)[-2:]
-    else:
-        dir_ = ""
-        # Another glorious assumption!
-        ref = "master"
-
+def check_github_structure(schema, repo_name, access_token, dir_="", ref="master"):
     # TODO: error handling
     g = Github(access_token)
     repo = g.get_repo(repo_name)
 
     return _check_github_dir(schema, repo, ref, dir_, "root directory")
+
+
+def error_report(failures):
+    report = ""
+    for project, errors in sorted(failures.items(), key=lambda i: i):
+        report += f"{project} has errors:\n"
+        for e in errors:
+            report += f"* {e}\n"
+        report += "\n"
+
+    return report
