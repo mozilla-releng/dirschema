@@ -93,6 +93,11 @@ def handle_pull_request(payload):
     ref = payload["pull_request"]["head"]["sha"]
     pull_number = payload["number"]
     repo = g.get_repo(full_name)
+    root_files = [i.name for i in repo.get_contents(".", ref=ref)]
+    if ".dirschema.yml" not in root_files:
+        # Nothing to do!
+        return
+
     commit = repo.get_commit(ref)
     commit.create_status("pending", context="dirschema")
     pull_request = repo.get_pull(pull_number)
