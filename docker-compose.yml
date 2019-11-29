@@ -1,0 +1,16 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "9876:9876"
+    volumes:
+      - .:/app
+    environment:
+      - HOST=0.0.0.0
+      - PORT=9876
+      - VERBOSE=1
+      # bhearsum's test account app
+      # https://github.com/apps/testbhearsum-releng-dirschema
+      - PRIVATE_KEY=/app/docker.d/github.key
+      - APP_ID=46861
