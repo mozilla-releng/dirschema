@@ -113,10 +113,12 @@ def check_manifest(ctx, manifest):
 
 
 @dirschema.command()
+@click.option("-p", "--port", default=9876)
+@click.option("-h", "--host", default="0.0.0.0")
 @click.argument("private_key", nargs=1)
 @click.argument("app_id", nargs=1)
-def run_github_app(private_key, app_id):
+def run_github_app(port, host, private_key, app_id):
     from .github import create_app
 
     app = create_app(open(private_key).read(), app_id)
-    app.run(port=9876, host="0.0.0.0")
+    app.run(port=port, host=host)
