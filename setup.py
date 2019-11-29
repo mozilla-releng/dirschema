@@ -47,6 +47,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
     ],
     description="Linter to ensure a file/directory complies with a specified schema",
     install_requires=requirements,
