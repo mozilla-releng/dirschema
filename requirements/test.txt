@@ -75,10 +75,9 @@ pathspec==0.8.0 \
 pip-compile-multi==1.5.9 \
     --hash=sha256:0bfd864fce280c5b3515e8a2b3871ed8d07d338ffdbe72b7c53b050328270b06 \
     --hash=sha256:ed9519858a1e9c64cd7ef7b122631fed02545ca038f35fa0f8cc69602775696c
-pip-tools==4.2.0 \
-    --hash=sha256:123174aabf7f4a63dd6e0bfc8aeeb5eaddbecb75a41e9f0dd4c447b1f2de14f7 \
-    --hash=sha256:5427ea4dcc175649723985fbcace9b2d8f46f9adbcc63bc2d7b247d9bcc74917 \
-    # via pip-compile-multi
+pip-tools==5.1.0 \
+    --hash=sha256:37c40df48c349ad516b96b447f93ca6d6398d477df95497295e32ab91979614c \
+    --hash=sha256:aa4c7f5b7faff0e61c3ca31f018397a4f361195efbb9db143faa57d6341e48a8    # via pip-compile-multi
 pluggy==0.13.1 \
     --hash=sha256:15b2acde666561e1298d71b523007ed7364de07029219b604cf808bfa1c765b0 \
     --hash=sha256:966c145cd83c96502c3c3868f50408687b38434af77734af1e9ca461a4081d2d    # via pytest
