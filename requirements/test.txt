@@ -71,9 +71,9 @@ packaging==20.3 \
 pathspec==0.8.0 \
     --hash=sha256:7d91249d21749788d07a2d0f94147accd8f845507400749ea19c1ec9054a12b0 \
     --hash=sha256:da45173eb3a6f2a5a487efba21f050af2b41948be6ab52b6a1e3ff22bb8b7061    # via black
-pip-compile-multi==1.5.8 \
-    --hash=sha256:6c77a2cdae62c28d6c151111e6a38ca9935ef37898f9766100ec2064326d74e9 \
-    --hash=sha256:fd92e064e8b187ce919a9b1e22bc7ff41e630bbfba8a9ab0501c260a2580feda
+pip-compile-multi==1.5.9 \
+    --hash=sha256:0bfd864fce280c5b3515e8a2b3871ed8d07d338ffdbe72b7c53b050328270b06 \
+    --hash=sha256:ed9519858a1e9c64cd7ef7b122631fed02545ca038f35fa0f8cc69602775696c
 pip-tools==4.2.0 \
     --hash=sha256:123174aabf7f4a63dd6e0bfc8aeeb5eaddbecb75a41e9f0dd4c447b1f2de14f7 \
     --hash=sha256:5427ea4dcc175649723985fbcace9b2d8f46f9adbcc63bc2d7b247d9bcc74917 \
