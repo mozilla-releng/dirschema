@@ -67,10 +67,9 @@ mccabe==0.6.1 \
     --hash=sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42 \
     --hash=sha256:dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f \
     # via flake8
-packaging==19.2 \
-    --hash=sha256:28b924174df7a2fa32c1953825ff29c61e2f5e082343165438812f00d3a7fc47 \
-    --hash=sha256:d9551545c6d761f3def1677baf08ab2a3ca17c56879e70fecba2fc4dde4ed108 \
-    # via pytest
+packaging==20.4 \
+    --hash=sha256:4357f74f47b9c12db93624a82154e9b120fa8293699949152b22065d556079f8 \
+    --hash=sha256:998416ba6962ae7fbd6596850b80e17859a5753ba17c32284f67bfff33784181    # via pytest
 pathspec==0.6.0 \
     --hash=sha256:e285ccc8b0785beadd4c18e5708b12bb8fcf529a1e61215b3feff1d1e559ea5c \
     # via black
