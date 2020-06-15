@@ -168,7 +168,6 @@ zipp==3.1.0 \
     --hash=sha256:c599e4d75c98f6798c509911d08a22e6c021d074469042177c8c86fb92eefd96    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==41.6.0 \
-    --hash=sha256:3e8e8505e563631e7cb110d9ad82d135ee866b8146d5efe06e42be07a72db20a \
-    --hash=sha256:6afa61b391dcd16cb8890ec9f66cc4015a8a31a6e1c2b4e0c464514be1a3d722 \
-    # via jsonschema
+setuptools==47.2.0 \
+    --hash=sha256:5da578f0979a9a9458e4975a90356e4b5796bf118419f934f68ab529ef480a96 \
+    --hash=sha256:c8320ac3d32e0493bc16f19c22b45b82ae4ccd7e6c36fc3f08a19e0e19fce538    # via jsonschema
