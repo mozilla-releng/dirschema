@@ -5,10 +5,6 @@ Directory Schema Checker
 .. image:: https://img.shields.io/pypi/v/dirschema.svg
         :target: https://pypi.python.org/pypi/dirschema
 
-.. image:: https://readthedocs.org/projects/dirschema/badge/?version=latest
-        :target: https://dirschema.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
-
 .. image:: https://pyup.io/repos/github/mozbhearsum/dirschema/shield.svg
      :target: https://pyup.io/repos/github/mozbhearsum/dirschema/
      :alt: Updates
@@ -17,7 +13,6 @@ Directory Schema Checker
 Linter to ensure a directory complies with a schema.
 
 * Free software: MPL2
-* Documentation: https://dirschema.readthedocs.io.
 
 Quickstart
 ----------
